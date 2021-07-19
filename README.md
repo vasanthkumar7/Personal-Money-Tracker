@@ -3,4 +3,4 @@ this app is to keep track on the money 💵💲💲 i spend and money i receive 
 
 
 # Screenshot
-<img src="screen2.png" >
+<img src="screen3.png" >
