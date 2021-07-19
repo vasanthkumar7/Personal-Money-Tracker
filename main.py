@@ -122,7 +122,7 @@ def dele():
     global jk,lis,dfs,Am1,Am2,Am3,to1,to3,to5,to7
     dfs.grid_forget()
     sds=lis.get(ANCHOR).split()
-    lis.delete(ANCHOR)
+    
     times=" ".join(sds[2:])
     fgd=open("account.txt","r")
     dff=fgd.read().split("\n")
@@ -135,7 +135,9 @@ def dele():
         flag=1
 
     if flag==0:
-        return 
+        return
+
+    lis.delete(ANCHOR)
         
     if os.path.exists("./cash.txt")==False:
         s=open("cash.txt","a")
