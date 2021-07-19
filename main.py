@@ -4,6 +4,8 @@ from tkinter import ttk
 import time
 import os
 
+from tkinter.messagebox import askyesno
+
 if os.path.exists("./account.txt")==False:
     f=open("account.txt","x")
 
@@ -59,9 +61,6 @@ what.grid(row=1,column=0)
 
 def entr():
     global en,what,lis,to1,to3,to5,to7
-    
-    
-
     if os.path.exists("./cash.txt")==False:
         s=open("cash.txt","a")
         s.write("0 0 0")
@@ -72,6 +71,8 @@ def entr():
         s=open("cash.txt","w")
         s.write("0 0 0")
         d=[0,0,0]
+
+    
     
 
     if en.get()!="":
@@ -115,7 +116,62 @@ def details():
     Am1.config(text="Amount: "+sds[0],font=15)
     Am2.config(text="On what: "+sds[1],font=15)
     Am3.config(text="When: "+times,font=15)
-    dfs.grid(row=3,column=0,pady=10)
+    dfs.grid(row=4,column=0,pady=10)
+
+def dele():
+    global jk,lis,dfs,Am1,Am2,Am3,to1,to3,to5,to7
+    dfs.grid_forget()
+    sds=lis.get(ANCHOR).split()
+    lis.delete(ANCHOR)
+    times=" ".join(sds[2:])
+    fgd=open("account.txt","r")
+    dff=fgd.read().split("\n")
+    nds=open("asd.txt","a")
+    l=[]
+
+    answer = askyesno(title='confirmation',message='Are you sure that you want to delete the entry?')
+    flag=0
+    if answer:
+        flag=1
+
+    if flag==0:
+        return 
+        
+    if os.path.exists("./cash.txt")==False:
+        s=open("cash.txt","a")
+        s.write("0 0 0")
+
+    s=open("cash.txt","r")
+    d=list(map(int,s.read().split()))
+    if d==[]:
+        s=open("cash.txt","w")
+        s.write("0 0 0")
+        d=[0,0,0]
+    if sds[1]=="ACCOUNT":
+        d[0]-=int(sds[0])
+    if sds[1]=="SHOP":
+        d[1]-=int(sds[0])
+    if sds[1]=="SPENT":
+        d[0]+=int(sds[0])
+        d[2]-=int(sds[0])
+
+    to1.config(text=str(d[0]+d[1]))
+    to3.config(text=str(d[0]))
+    to5.config(text=str(d[1]))
+    to7.config(text=str(d[2]))
+    g=open("cash.txt","w")
+    g.write(str(d[0])+" "+str(d[1])+" "+str(d[2]))
+    
+
+    fdx=open("account.txt","w")
+    for i in dff:
+        if i.split()[2:]!=sds[2:] and i.split()!=[]:
+            fdx.write(i+"\n")
+    fgd.close()
+   
+        
+
+    
     
 notes=sdf.read().split("\n")
 jk=Frame(root,borderwidth=2,relief="solid")
@@ -123,6 +179,8 @@ ty=Label(jk,text="ENTRIES ",font=("arial",20)).grid(row=0,column=0,pady=5)
 lis=Listbox(jk,height=8,width=40,font=10)
 de=Button(jk,text="Details",width=20,font=("arial",15),bg="green",command=details)
 de.grid(row=2,column=0,pady=5)
+de=Button(jk,text="Delete",width=20,font=("arial",15),bg="red",command=dele)
+de.grid(row=3,column=0,pady=5)
 dfs=Frame(jk)
 Am1=Label(dfs,text="")
 Am1.grid(row=0,column=0)
@@ -130,7 +188,7 @@ Am2=Label(dfs,text="")
 Am2.grid(row=1,column=0)
 Am3=Label(dfs,text="")
 Am3.grid(row=2,column=0)
-dfs.grid(row=3,column=0)
+dfs.grid(row=4,column=0)
 for i in notes:
     if i!="":
         lis.insert(END,i)
